@@ -4,14 +4,17 @@ import * as esbuild from 'esbuild-wasm';
 import { unpkgPathPlugin } from './plugins/unpkg-path-plugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 
+let inputStr = '';
+inputStr = "import 'bulma/css/bulma.css'";
+
 const App = () => {
-    const [input, setInput] = useState('');
+    const [input, setInput] = useState(inputStr);
     const [code, setCode] = useState('');
 
     const startService = async () => {
         await esbuild.initialize({
             worker: true,
-            wasmURL: '/esbuild.wasm',
+            wasmURL: 'https://unpkg.com/esbuild-wasm@0.14.23/esbuild.wasm',
         })
     }
     const onClick = async () => {
