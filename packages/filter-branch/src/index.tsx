@@ -30,8 +30,11 @@ const App = () => {
             }
         });
 
-        console.log(result)
-        setCode(result.outputFiles[0].text);
+        setCode(`
+            <script>
+                ${result.outputFiles[0].text}
+            </script>
+        `);
     }
 
     useEffect(() => {
@@ -40,13 +43,14 @@ const App = () => {
 
     return <>
         <textarea
-        value={input}
+            value={input}
             onChange={e => setInput(e.target.value)}
         ></textarea>
         <div>
             <button onClick={onClick}>Submit</button>
         </div>
-        <pre>{code}</pre>
+        {/* <pre>{code}</pre> */}
+        <iframe sandbox="allow-scripts" frameBorder="1" srcDoc={code}></iframe>
     </>;
 }
 
