@@ -1,15 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import * as esbuild from 'esbuild-wasm';
 import { unpkgPathPlugin } from './plugins/unpkg-path-plugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 
 let inputStr = '';
-inputStr = "import 'bulma/css/bulma.css'";
+inputStr =
+`import React from 'react'
+import ReactDOM from 'react-dom'
+const App = () => {
+    return <h1>Hi React!</h1>
+}
+ReactDOM.render(<App />, document.querySelector('#root'))
+`;
 
 const App = () => {
     const [input, setInput] = useState(inputStr);
     const [code, setCode] = useState('');
+    const iframe = useRef<any>()
 
     const startService = async () => {
         await esbuild.initialize({
@@ -30,16 +38,25 @@ const App = () => {
             }
         });
 
-        setCode(`
-            <script>
-                ${result.outputFiles[0].text}
-            </script>
-        `);
+        iframe.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
     }
 
     useEffect(() => {
         startService();
     }, []);
+
+    const iframeHtml = `
+        <html>
+            <head></head>
+            <body>
+                <div id="root"></div>
+                <script>
+                    window.addEventListener('message', (event) => {
+                        eval(event.data);
+                    }, false)
+                </script>
+        </html>
+    `
 
     return <>
         <textarea
@@ -49,8 +66,7 @@ const App = () => {
         <div>
             <button onClick={onClick}>Submit</button>
         </div>
-        {/* <pre>{code}</pre> */}
-        <iframe sandbox="allow-scripts" frameBorder="1" srcDoc={code}></iframe>
+        <iframe ref={iframe} sandbox="allow-scripts" frameBorder="1" srcDoc={iframeHtml}></iframe>
     </>;
 }
 
