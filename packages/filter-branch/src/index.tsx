@@ -16,8 +16,26 @@ ReactDOM.render(<App />, document.querySelector('#root'))
 
 const App = () => {
     const [input, setInput] = useState(inputStr);
-    const [code, setCode] = useState('');
     const iframe = useRef<any>()
+
+    const iframeHtml = `
+        <html>
+            <head></head>
+            <body>
+                <div id="root"></div>
+                <script>
+                    window.addEventListener('message', (event) => {
+                        try {
+                            eval(event.data);
+                        } catch (error) {
+                            const root = document.querySelector('#root');
+                            root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + error + '</div>';
+                            console.error;
+                        }
+                    }, false)
+                </script>
+        </html>
+    `
 
     const startService = async () => {
         await esbuild.initialize({
@@ -25,7 +43,9 @@ const App = () => {
             wasmURL: 'https://unpkg.com/esbuild-wasm@0.14.23/esbuild.wasm',
         })
     }
+
     const onClick = async () => {
+        iframe.current.srcdoc = iframeHtml;
         const result = await esbuild.build({
             entryPoints: ['index.js'],
             bundle: true,
@@ -45,24 +65,6 @@ const App = () => {
         startService();
     }, []);
 
-    const iframeHtml = `
-        <html>
-            <head></head>
-            <body>
-                <div id="root"></div>
-                <script>
-                    window.addEventListener('message', (event) => {
-                        try {
-                            eval(event.data);
-                        } catch (error) {
-                            const root = document.querySelector('#root');
-                            root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + error + '</div>';
-                            console.error(error);
-                        }
-                    }, false)
-                </script>
-        </html>
-    `
 
     return <>
         <textarea
@@ -72,7 +74,7 @@ const App = () => {
         <div>
             <button onClick={onClick}>Submit</button>
         </div>
-        <iframe ref={iframe} sandbox="allow-scripts" frameBorder="1" srcDoc={iframeHtml}></iframe>
+        <iframe title="preview" ref={iframe} sandbox="allow-scripts" frameBorder="1" srcDoc={iframeHtml}></iframe>
     </>;
 }
 
