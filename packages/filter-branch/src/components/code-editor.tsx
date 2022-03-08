@@ -3,9 +3,13 @@ import monaco from "monaco-editor";
 
 interface CodeEditorProps {
   initialValue: string;
+  onChange(value: string | undefined): void;
 }
 
-export const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue }) => {
+export const CodeEditor: React.FC<CodeEditorProps> = ({
+  initialValue,
+  onChange,
+}) => {
   const options: monaco.editor.IStandaloneEditorConstructionOptions = {
     wordWrap: "on",
     minimap: { enabled: false },
@@ -21,6 +25,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue }) => {
 
   return (
     <Editor
+      onChange={onChange}
       defaultLanguage="javascript"
       height="50vh"
       defaultValue={initialValue}

@@ -9,14 +9,15 @@ let inputStr = "";
 inputStr = `import React from 'react'
 import ReactDOM from 'react-dom'
 const App = () => {
-    return <h1>Hi React!</h1>
+  return <h1>Hi React!</h1>
 }
 ReactDOM.render(<App />, document.querySelector('#root'))
 `;
 
 const App = () => {
-  const [input, setInput] = useState(inputStr);
+  const [input, setInput] = useState("");
   const iframe = useRef<any>();
+  const esbuildInit = useRef<boolean>(false);
 
   const iframeHtml = `
         <html>
@@ -40,8 +41,9 @@ const App = () => {
   const startService = async () => {
     await esbuild.initialize({
       worker: true,
-      wasmURL: "https://unpkg.com/esbuild-wasm@0.14.23/esbuild.wasm",
+      wasmURL: "https://unpkg.com/esbuild-wasm@0.14.25/esbuild.wasm",
     });
+    esbuildInit.current = true;
   };
 
   const onClick = async () => {
@@ -57,21 +59,22 @@ const App = () => {
         global: "window",
       },
     });
-
     iframe.current.contentWindow.postMessage(result.outputFiles[0].text, "*");
   };
 
   useEffect(() => {
-    startService();
-  }, []);
+    if (!esbuildInit.current) {
+      startService();
+    }
+  }, [input]);
+
+  const handleEditorChange = (value: string | undefined) => {
+    value ? setInput(value) : setInput("");
+  };
 
   return (
     <>
-      <CodeEditor initialValue={inputStr} />
-      <textarea
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      ></textarea>
+      <CodeEditor initialValue={inputStr} onChange={handleEditorChange} />
       <div>
         <button onClick={onClick}>Submit</button>
       </div>
