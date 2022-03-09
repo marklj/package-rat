@@ -1829,6 +1829,11 @@
   resolved "https://registry.npmjs.org/@types/prettier/-/prettier-2.4.4.tgz"
   integrity sha512-ReVR2rLTV1kvtlWFyuot+d1pkpG2Fw/XKE3PDAdj57rbM97ttSp9JZ2UsP+2EHTylra9cUf6JA7tGwW1INzUrA==
 
+"@types/prettier@^2.4.4":
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.4.4.tgz#5d9b63132df54d8909fce1c3f8ca260fdd693e17"
+  integrity sha512-ReVR2rLTV1kvtlWFyuot+d1pkpG2Fw/XKE3PDAdj57rbM97ttSp9JZ2UsP+2EHTylra9cUf6JA7tGwW1INzUrA==
+
 "@types/prop-types@*":
   version "15.7.4"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.4.tgz"
@@ -3724,9 +3729,9 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild-wasm@^0.14.23:
+esbuild-wasm@^0.14.25:
   version "0.14.25"
-  resolved "https://registry.npmjs.org/esbuild-wasm/-/esbuild-wasm-0.14.25.tgz"
+  resolved "https://registry.yarnpkg.com/esbuild-wasm/-/esbuild-wasm-0.14.25.tgz#819302709e79a8dd935429b5925585c58406e8fe"
   integrity sha512-QZ8wt4jBN1IGVCp/A+u87BzNYOZeIp87d8TMQznU8w7NvZEvdwEWHVfjrOBZ6qqlOJj2/Y/kOUZLy0nk2n9anw==
 
 escalade@^3.1.1:
