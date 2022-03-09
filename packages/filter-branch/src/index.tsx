@@ -1,3 +1,4 @@
+import "./index.css";
 import { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import * as esbuild from "esbuild-wasm";
@@ -5,8 +6,7 @@ import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 import { CodeEditor } from "./components/code-editor";
 
-let inputStr = "";
-inputStr = `import React from 'react'
+const inputStr = `import React from 'react'
 import ReactDOM from 'react-dom'
 const App = () => {
   return <h1>Hi React!</h1>
