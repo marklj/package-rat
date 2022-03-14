@@ -36,13 +36,15 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
 
   const onFormatClick = () => {
     const unformmated = editorRef.current?.getModel()?.getValue();
-    const formatted = prettier.format(unformmated ?? "", {
-      parser: "babel",
-      plugins: [parser],
-      useTabs: false,
-      semi: true,
-      singleQuote: true,
-    });
+    const formatted = prettier
+      .format(unformmated ?? "", {
+        parser: "babel",
+        plugins: [parser],
+        useTabs: false,
+        semi: true,
+        singleQuote: true,
+      })
+      .replace(/\n$/, "");
     editorRef.current?.setValue(formatted);
   };
 
@@ -51,7 +53,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       <div className="flex justify-end relative">
         <button
           onClick={onFormatClick}
-          className="absolute text-sm rounded text-white bg-blue-600 px-2 py-1 mt-3 mr-6 z-40 opacity-0 transition hover:scale-105 hover:bg-blue-500 group-hover:opacity-100"
+          className="absolute text-xs rounded text-white bg-blue-600 px-2 py-1 mt-3 mr-6 z-40 opacity-0 transition hover:scale-105 hover:bg-blue-500 group-hover:opacity-100"
         >
           Format
         </button>
