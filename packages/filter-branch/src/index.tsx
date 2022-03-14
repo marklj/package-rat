@@ -6,12 +6,12 @@ import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
 import { CodeEditor } from "./components/code-editor";
 
-const inputStr = `import React from 'react'
-import ReactDOM from 'react-dom'
+const inputStr = `import React from 'react';
+import ReactDOM from 'react-dom';
 const App = () => {
-  return <h1>Hi React!</h1>
-}
-ReactDOM.render(<App />, document.querySelector('#root'))
+  return <h1 onClick={() => console.log('click')}>Hi React!</h1>;
+};
+ReactDOM.render(<App />, document.querySelector('#root'));
 `;
 
 const App = () => {
