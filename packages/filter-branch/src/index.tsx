@@ -1,10 +1,8 @@
 import "./index.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { CodeEditor } from "./components/code-editor";
-import Preview from "./components/preview";
-import bundle from "./bundler";
 import * as esbuild from "esbuild-wasm";
+import CodeCell from "./components/code-cell";
 
 const inputStr = `import React from 'react';
 import ReactDOM from 'react-dom';
@@ -23,43 +21,17 @@ const startService = async () => {
 };
 
 const App = () => {
-  const [input, setInput] = useState("");
-  const [code, setCode] = useState("");
-
   useEffect(() => {
     if (!service) {
-      setInput(inputStr);
       startService().then(() => {
         service = true;
       });
     }
   }, []);
 
-  const onClick = () => {
-    bundleAndOutput();
-  };
-
-  const bundleAndOutput = async () => {
-    const output = await bundle(input);
-    setCode(output);
-  };
-
-  const handleEditorChange = (value: string) => {
-    setInput(value);
-  };
-
   return (
     <>
-      <CodeEditor initialValue={inputStr} onChange={handleEditorChange} />
-      <div>
-        <button
-          className="rounded bg-indigo-600 text-white px-2 py-1 text-xl"
-          onClick={onClick}
-        >
-          Submit
-        </button>
-      </div>
-      <Preview code={code} />
+      <CodeCell />
     </>
   );
 };
