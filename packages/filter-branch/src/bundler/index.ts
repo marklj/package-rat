@@ -1,8 +1,8 @@
 import * as esbuild from "esbuild-wasm";
-import { unpkgPathPlugin } from "../plugins/unpkg-path-plugin";
-import { fetchPlugin } from "../plugins/fetch-plugin";
+import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
+import { fetchPlugin } from "./plugins/fetch-plugin";
 
-export default async (rawCode: string) => {
+const bundle = async (rawCode: string) => {
   const result = await esbuild.build({
     entryPoints: ["index.js"],
     bundle: true,
@@ -15,7 +15,7 @@ export default async (rawCode: string) => {
     },
   });
 
-  // console.log(result.outputFiles[0].text);
-
   return result.outputFiles[0].text;
 };
+
+export default bundle;

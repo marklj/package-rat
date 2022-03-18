@@ -6,7 +6,6 @@ interface PreviewProps {
 
 const Preview: React.FC<PreviewProps> = ({ code }) => {
   const iframe = useRef<any>();
-  let loaded = false;
 
   const iframeHtml = `
     <html>
@@ -24,23 +23,16 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
           </script>
         </head>
       <body>
-        Result:
         <div id="root"></div>
       </body>
     </html>`;
 
-  const postMessage = () => {
-    iframe.current.contentWindow.postMessage(code, "*");
-    setTimeout(() => {
-      postMessage();
-    }, 10);
-  };
-
   useEffect(() => {
-    console.log("effect");
     iframe.current.srcdoc = iframeHtml;
-    postMessage();
-  }, [code]);
+    setTimeout(() => {
+      iframe.current.contentWindow.postMessage(code, "*");
+    }, 10);
+  }, [code, iframeHtml]);
 
   return (
     <iframe
