@@ -1,92 +1,67 @@
 import "./index.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import * as esbuild from "esbuild-wasm";
-import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
-import { fetchPlugin } from "./plugins/fetch-plugin";
 import { CodeEditor } from "./components/code-editor";
+import Preview from "./components/preview";
+import bundle from "./bundler";
+import * as esbuild from "esbuild-wasm";
 
 const inputStr = `import React from 'react';
 import ReactDOM from 'react-dom';
 const App = () => {
-  return <h1 onClick={() => console.log('click')}>Hi React!</h1>;
+  return <h1>Hi React!</h1>;
 };
 ReactDOM.render(<App />, document.querySelector('#root'));
 `;
 
+let service: boolean = false;
+const startService = async () => {
+  await esbuild.initialize({
+    worker: true,
+    wasmURL: "https://unpkg.com/esbuild-wasm@0.14.25/esbuild.wasm",
+  });
+};
+
 const App = () => {
   const [input, setInput] = useState("");
-  const iframe = useRef<any>();
-  const esbuildInit = useRef<boolean>(false);
-
-  const iframeHtml = `
-        <html>
-            <head></head>
-            <body>
-                <div id="root"></div>
-                <script>
-                    window.addEventListener('message', (event) => {
-                        try {
-                            eval(event.data);
-                        } catch (error) {
-                            const root = document.querySelector('#root');
-                            root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + error + '</div>';
-                            console.error;
-                        }
-                    }, false)
-                </script>
-        </html>
-    `;
-
-  const startService = async () => {
-    await esbuild.initialize({
-      worker: true,
-      wasmURL: "https://unpkg.com/esbuild-wasm@0.14.25/esbuild.wasm",
-    });
-    esbuildInit.current = true;
-  };
-
-  const onClick = async () => {
-    iframe.current.srcdoc = iframeHtml;
-    const result = await esbuild.build({
-      entryPoints: ["index.js"],
-      bundle: true,
-      write: false,
-      plugins: [unpkgPathPlugin(), fetchPlugin(input)],
-      target: "es2015",
-      define: {
-        "process.env.NODE_ENV": '"production"',
-        global: "window",
-      },
-    });
-    iframe.current.contentWindow.postMessage(result.outputFiles[0].text, "*");
-  };
+  const [code, setCode] = useState("");
 
   useEffect(() => {
-    if (!esbuildInit.current) {
-      startService();
+    if (!service) {
+      setInput(inputStr);
+      startService().then(() => {
+        service = true;
+      });
     }
-  }, [input]);
+  }, []);
 
-  const handleEditorChange = (value: string | undefined) => {
-    value ? setInput(value) : setInput("");
+  const onClick = () => {
+    bundleAndOutput();
+  };
+
+  const bundleAndOutput = async () => {
+    const output = await bundle(input);
+    setCode(output);
+  };
+
+  const handleEditorChange = (value: string) => {
+    setInput(value);
   };
 
   return (
     <>
       <CodeEditor initialValue={inputStr} onChange={handleEditorChange} />
       <div>
-        <button onClick={onClick}>Submit</button>
+        <button
+          className="rounded bg-indigo-600 text-white px-2 py-1 text-xl"
+          onClick={onClick}
+        >
+          Submit
+        </button>
       </div>
-      <iframe
-        title="preview"
-        ref={iframe}
-        sandbox="allow-scripts"
-        frameBorder="1"
-        srcDoc={iframeHtml}
-      ></iframe>
+      <Preview code={code} />
     </>
   );
 };
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+ReactDOM.render(<App />, document.querySelector("#parentroot"));

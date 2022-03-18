@@ -32,6 +32,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     editor: monaco.editor.IStandaloneCodeEditor
   ): void => {
     editorRef.current = editor;
+    editorRef.current?.setValue(initialValue);
   };
 
   const onFormatClick = () => {
@@ -53,7 +54,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       <div className="flex justify-end relative">
         <button
           onClick={onFormatClick}
-          className="absolute text-xs rounded text-white bg-blue-600 px-2 py-1 mt-3 mr-6 z-40 opacity-0 transition hover:scale-105 hover:bg-blue-500 group-hover:opacity-100"
+          className="absolute text-xs rounded text-white bg-indigo-600 px-2 py-1 mt-3 mr-6 z-40 opacity-0 transition hover:scale-105 hover:bg-indigo-500 group-hover:opacity-100"
         >
           Format
         </button>
@@ -62,7 +63,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         onChange={onChange}
         defaultLanguage="javascript"
         height="50vh"
-        defaultValue={initialValue}
         theme="vs-dark"
         options={options}
         onMount={onMount}
