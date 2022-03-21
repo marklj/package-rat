@@ -12,17 +12,26 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
     <html>
       <head>
         <script>
-            window.addEventListener('message', (event) => {
-              try {
-                eval(event.data);
-              } catch (error) {
-                const root = document.querySelector('#root');
-                root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + error + '</div>';
-                console.error;
-              }
-            }, false)
-          </script>
-        </head>
+          const handleError = (error) => {
+            const root = document.querySelector('#root');
+            root.innerHTML = '<div style="color: red;"><h4>Runtime Error</h4>' + error + '</div>';
+            console.error(error);
+          }
+
+          window.addEventListener('error', (event) => {
+            event.preventDefault();
+            handleError(event.error);
+          });
+
+          window.addEventListener('message', (event) => {
+            try {
+              eval(event.data);
+            } catch (error) {
+              handleError(error);
+            }
+          }, false)
+        </script>
+      </head>
       <body>
         <div id="root"></div>
       </body>
