@@ -50,7 +50,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   return (
-    <div className="group">
+    <div className="group h-full w-full">
       <div className="flex justify-end relative">
         <button
           onClick={onFormatClick}
@@ -62,7 +62,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       <Editor
         onChange={onChange}
         defaultLanguage="javascript"
-        height="50vh"
+        height="100%"
         theme="vs-dark"
         options={options}
         onMount={onMount}

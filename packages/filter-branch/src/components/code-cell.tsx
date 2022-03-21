@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { CodeEditor } from "./code-editor";
 import Preview from "./preview";
 import bundle from "../bundler";
+import Resizable from "./resizable";
 
 const inputStr = `import React from 'react';
 import ReactDOM from 'react-dom';
@@ -33,18 +34,12 @@ const CodeCell = () => {
   };
 
   return (
-    <div>
-      <CodeEditor initialValue={inputStr} onChange={handleEditorChange} />
-      <div>
-        <button
-          className="rounded bg-indigo-600 text-white px-2 py-1 text-xl"
-          onClick={onClick}
-        >
-          Submit
-        </button>
+    <Resizable direction="vertical">
+      <div className="h-full flex flex-row">
+        <CodeEditor initialValue={inputStr} onChange={handleEditorChange} />
+        <Preview code={code} />
       </div>
-      <Preview code={code} />
-    </div>
+    </Resizable>
   );
 };
 
