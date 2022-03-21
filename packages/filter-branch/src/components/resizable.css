@@ -9,3 +9,6 @@
   @apply w-3 min-w-[.75rem] h-full cursor-ew-resize;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
 }
+.resize-horizontal {
+  @apply flex flex-row;
+}

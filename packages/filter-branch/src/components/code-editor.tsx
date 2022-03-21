@@ -50,7 +50,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   return (
-    <div className="group h-full w-full">
+    <div className="group h-full w-[calc(100%-10px)]">
       <div className="flex justify-end relative">
         <button
           onClick={onFormatClick}

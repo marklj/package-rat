@@ -4,14 +4,6 @@ import ReactDOM from "react-dom";
 import * as esbuild from "esbuild-wasm";
 import CodeCell from "./components/code-cell";
 
-const inputStr = `import React from 'react';
-import ReactDOM from 'react-dom';
-const App = () => {
-  return <h1>Hi React!</h1>;
-};
-ReactDOM.render(<App />, document.querySelector('#root'));
-`;
-
 let service: boolean = false;
 const startService = async () => {
   await esbuild.initialize({

@@ -1,8 +1,8 @@
 .preview-wrapper {
-  @apply relative h-full;
+  @apply relative h-full flex-grow;
 }
 .preview-wrapper iframe {
-  @apply h-full bg-white;
+  @apply h-full bg-white w-full;
 }
 .react-draggable-transparent-selection .preview-wrapper:after {
   content: "";
