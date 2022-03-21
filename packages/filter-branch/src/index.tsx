@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import * as esbuild from "esbuild-wasm";
 import CodeCell from "./components/code-cell";
+import TextEditor from "./components/text-editor";
 
 let service: boolean = false;
 const startService = async () => {
@@ -23,7 +24,7 @@ const App = () => {
 
   return (
     <>
-      <CodeCell />
+      <TextEditor />
     </>
   );
 };

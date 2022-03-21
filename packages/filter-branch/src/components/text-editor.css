@@ -1,0 +1,7 @@
+.text-editor .w-md-editor-bar svg {
+  display: none;
+}
+.text-editor .w-md-editor-bar {
+  @apply w-full h-3 cursor-ns-resize bg-[#37414b] bg-no-repeat bg-center relative;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=");
+}

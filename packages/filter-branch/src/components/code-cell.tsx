@@ -37,7 +37,6 @@ const CodeCell = () => {
 
   const handleEditorChange = (value: string) => {
     setInput(value);
-    let wait;
   };
 
   return (
