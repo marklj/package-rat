@@ -3,9 +3,10 @@ import "./preview.css";
 
 interface PreviewProps {
   code: string;
+  error: string;
 }
 
-const Preview: React.FC<PreviewProps> = ({ code }) => {
+const Preview: React.FC<PreviewProps> = ({ code, error }) => {
   const iframe = useRef<any>();
 
   const iframeHtml = `
@@ -53,6 +54,9 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
         frameBorder="0"
         srcDoc={iframeHtml}
       />
+      {error && (
+        <div className="absolute top-0 left-0 text-red-500">{error}</div>
+      )}
     </div>
   );
 };
