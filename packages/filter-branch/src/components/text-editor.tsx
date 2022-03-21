@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import "./text-editor.css";
+import "../unreset.scss";
 
 interface TextEditorProps {}
 
@@ -29,7 +30,7 @@ const TextEditor: React.FC<TextEditorProps> = () => {
     return (
       <div ref={editorRef}>
         <MDEditor
-          className="text-editor"
+          className="text-editor unreset"
           value={value}
           onChange={(val) => setValue(val || "")}
         />
@@ -38,7 +39,7 @@ const TextEditor: React.FC<TextEditorProps> = () => {
   }
   return (
     <div onClick={() => setEditing(true)}>
-      <MDEditor.Markdown className="text-editor" source={value} />
+      <MDEditor.Markdown className="text-editor unreset" source={value} />
     </div>
   );
 };
