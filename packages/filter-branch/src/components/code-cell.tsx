@@ -19,10 +19,14 @@ const CodeCell = () => {
   useEffect(() => {
     setInput(inputStr);
   }, []);
-
-  const onClick = () => {
-    bundleAndOutput();
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      bundleAndOutput();
+    }, 750);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [input]);
 
   const bundleAndOutput = async () => {
     const output = await bundle(input);
@@ -31,12 +35,15 @@ const CodeCell = () => {
 
   const handleEditorChange = (value: string) => {
     setInput(value);
+    let wait;
   };
 
   return (
     <Resizable direction="vertical">
       <div className="h-full flex flex-row">
-        <CodeEditor initialValue={inputStr} onChange={handleEditorChange} />
+        <Resizable direction="horizontal">
+          <CodeEditor initialValue={inputStr} onChange={handleEditorChange} />
+        </Resizable>
         <Preview code={code} />
       </div>
     </Resizable>
