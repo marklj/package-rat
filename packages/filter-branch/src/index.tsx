@@ -4,6 +4,8 @@ import ReactDOM from "react-dom";
 import * as esbuild from "esbuild-wasm";
 import CodeCell from "./components/code-cell";
 import TextEditor from "./components/text-editor";
+import { Provider } from "react-redux";
+import { store } from "./state";
 
 let service: boolean = false;
 const startService = async () => {
@@ -23,9 +25,9 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <Provider store={store}>
       <TextEditor />
-    </>
+    </Provider>
   );
 };
 
