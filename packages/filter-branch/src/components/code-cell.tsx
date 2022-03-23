@@ -3,8 +3,10 @@ import { CodeEditor } from "./code-editor";
 import Preview from "./preview";
 import bundle from "../bundler";
 import Resizable from "./resizable";
+import { Cell } from "../state";
+import { useActions } from "../hooks/use-actions";
 
-const inputStr = `import React from 'react';
+const initalValue = `import React from 'react';
 import ReactDOM from 'react-dom';
 const App = () => {
   return <h1>Hi React!</h1>;
@@ -12,14 +14,15 @@ const App = () => {
 ReactDOM.render(<App />, document.querySelector('#root'));
 `;
 
-const CodeCell = () => {
-  const [input, setInput] = useState("");
+interface CodeCellProps {
+  cell: Cell;
+}
+
+const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const { updateCell } = useActions();
 
-  useEffect(() => {
-    setInput(inputStr);
-  }, []);
   useEffect(() => {
     const timer = setTimeout(() => {
       bundleAndOutput();
@@ -27,23 +30,26 @@ const CodeCell = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [input]);
+  }, [cell.content]);
 
   const bundleAndOutput = async () => {
-    const output = await bundle(input);
+    const output = await bundle(cell.content);
     setCode(output.code);
     setError(output.error);
   };
 
   const handleEditorChange = (value: string) => {
-    setInput(value);
+    updateCell(cell.id, value);
   };
 
   return (
     <Resizable direction="vertical">
       <div className="h-full flex flex-row">
         <Resizable direction="horizontal">
-          <CodeEditor initialValue={inputStr} onChange={handleEditorChange} />
+          <CodeEditor
+            initialValue={cell.content || initalValue}
+            onChange={handleEditorChange}
+          />
         </Resizable>
         <Preview code={code} error={error} />
       </div>

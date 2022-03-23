@@ -2,13 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import "./text-editor.css";
 import "../unreset.scss";
+import { useActions } from "../hooks/use-actions";
+import { Cell } from "../state";
 
-interface TextEditorProps {}
+interface TextEditorProps {
+  cell: Cell;
+}
 
-const TextEditor: React.FC<TextEditorProps> = () => {
-  const [value, setValue] = useState<string>("# Header");
+const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
   const [editing, setEditing] = useState(false);
+  const { updateCell } = useActions();
   const editorRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     const listener = (event: MouseEvent) => {
       if (
@@ -31,15 +36,18 @@ const TextEditor: React.FC<TextEditorProps> = () => {
       <div ref={editorRef}>
         <MDEditor
           className="text-editor unreset"
-          value={value}
-          onChange={(val) => setValue(val || "")}
+          value={cell.content}
+          onChange={(val) => updateCell(cell.id, val || "")}
         />
       </div>
     );
   }
   return (
     <div onClick={() => setEditing(true)}>
-      <MDEditor.Markdown className="text-editor unreset" source={value} />
+      <MDEditor.Markdown
+        className="text-editor unreset"
+        source={cell.content || "Click to edit"}
+      />
     </div>
   );
 };
