@@ -21,14 +21,10 @@ const CellList: React.FC = () => {
 
   return (
     <div className="m-4">
+      <div className={addCellStyle}>
+        <AddCell nextCellId={null} />
+      </div>
       {renderedCells}
-      {cells.length ? (
-        ""
-      ) : (
-        <div className={addCellStyle}>
-          <AddCell nextCellId={null} />
-        </div>
-      )}
     </div>
   );
 };
