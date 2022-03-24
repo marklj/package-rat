@@ -5,6 +5,7 @@ import Resizable from "./resizable";
 import { Cell } from "../state";
 import { useActions } from "../hooks/use-actions";
 import { useTypedSelector } from "../hooks/use-typed-selector";
+import ProgressBar from "./progress-bar";
 
 const initalValue = `import React from 'react';
 import ReactDOM from 'react-dom';
@@ -52,7 +53,13 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             onChange={handleEditorChange}
           />
         </Resizable>
-        {bundle && <Preview code={bundle.code} error={bundle.error} />}
+        {!bundle || bundle.loading ? (
+          <div className="h-full w-full bg-white">
+            <ProgressBar />
+          </div>
+        ) : (
+          <Preview code={bundle.code} error={bundle.error} />
+        )}
       </div>
     </Resizable>
   );
