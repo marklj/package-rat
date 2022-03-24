@@ -3,27 +3,38 @@ import { ActionType } from "../action-types";
 import { Action } from "../actions";
 
 interface BundlesState {
-  [keyof: string]: {
-    loading: boolean;
-    code: string;
-    error: string;
+  isInit: boolean;
+  items: {
+    [keyof: string]:
+      | {
+          loading: boolean;
+          code: string;
+          error: string;
+        }
+      | undefined;
   };
 }
 
-const initalState: BundlesState = {};
+const initalState: BundlesState = {
+  isInit: false,
+  items: {},
+};
 
 const reducer = produce(
   (state: BundlesState = initalState, action: Action): BundlesState => {
     switch (action.type) {
+      case ActionType.BUNDLER_INIT_COMPLETE:
+        state.isInit = true;
+        return state;
       case ActionType.BUNDLE_START:
-        state[action.payload.cellId] = {
+        state.items[action.payload.cellId] = {
           loading: true,
           code: "",
           error: "",
         };
         return state;
       case ActionType.BUNDLE_COMPLETE:
-        state[action.payload.cellId] = {
+        state.items[action.payload.cellId] = {
           loading: false,
           code: action.payload.bundle,
           error: action.payload.error,
@@ -32,7 +43,8 @@ const reducer = produce(
       default:
         return state;
     }
-  }
+  },
+  initalState
 );
 
 export default reducer;

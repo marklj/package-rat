@@ -12,11 +12,13 @@ store.dispatch({
     type: "code",
   },
 });
+
+const id = store.getState().cells.order[0];
 store.dispatch({
-  type: ActionType.INSERT_CELL_AFTER,
+  type: ActionType.UPDATE_CELL,
   payload: {
-    id: null,
-    type: "text",
+    id,
+    content: "document.querySelector('#root').innerHTML = 'hello!'",
   },
 });
 

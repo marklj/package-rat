@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { CodeEditor } from "./code-editor";
 import Preview from "./preview";
-import bundle from "../bundler";
 import Resizable from "./resizable";
 import { Cell } from "../state";
 import { useActions } from "../hooks/use-actions";
+import { useTypedSelector } from "../hooks/use-typed-selector";
 
 const initalValue = `import React from 'react';
 import ReactDOM from 'react-dom';
@@ -19,24 +19,25 @@ interface CodeCellProps {
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  const [code, setCode] = useState("");
-  const [error, setError] = useState("");
-  const { UpdateCell } = useActions();
+  const { UpdateCell, CreateBundle } = useActions();
+  const bundle = useTypedSelector((state) => state.bundles.items[cell.id]);
+  const bundlerInitialized = useTypedSelector(
+    ({ bundles: { isInit } }) => isInit
+  );
 
   useEffect(() => {
+    if (bundlerInitialized && !bundle) {
+      CreateBundle(cell.id, cell.content);
+      return;
+    }
     const timer = setTimeout(() => {
-      bundleAndOutput();
+      CreateBundle(cell.id, cell.content);
     }, 750);
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content]);
-
-  const bundleAndOutput = async () => {
-    const output = await bundle(cell.content);
-    setCode(output.code);
-    setError(output.error);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cell.content, cell.id, CreateBundle, bundlerInitialized]);
 
   const handleEditorChange = (value: string) => {
     UpdateCell(cell.id, value);
@@ -51,7 +52,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             onChange={handleEditorChange}
           />
         </Resizable>
-        <Preview code={code} error={error} />
+        {bundle && <Preview code={bundle.code} error={bundle.error} />}
       </div>
     </Resizable>
   );

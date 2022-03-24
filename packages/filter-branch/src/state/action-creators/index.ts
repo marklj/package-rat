@@ -9,6 +9,7 @@ import {
   UpdateCellAction,
 } from "../actions";
 import { CellType, Direction } from "../cell";
+import * as esbuild from "esbuild-wasm";
 
 export const UpdateCell = (id: string, content: string): UpdateCellAction => {
   return {
@@ -46,6 +47,21 @@ export const InsertCellAfter = (
     },
   };
 };
+export const InitBundler = () => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.BUNDLER_INIT,
+    });
+    await esbuild.initialize({
+      worker: true,
+      wasmURL: "https://unpkg.com/esbuild-wasm@0.14.25/esbuild.wasm",
+    });
+    dispatch({
+      type: ActionType.BUNDLER_INIT_COMPLETE,
+    });
+  };
+};
+
 export const CreateBundle = (cellId: string, input: string) => {
   return async (dispatch: Dispatch<Action>) => {
     dispatch({
