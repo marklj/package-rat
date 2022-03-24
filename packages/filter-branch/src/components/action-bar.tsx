@@ -6,13 +6,13 @@ interface ActionBarProps {
 }
 
 const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
-  const { moveCell, deleteCell } = useActions();
+  const { MoveCell, DeleteCell } = useActions();
   return (
     <div className="flex justify-end items-center bg-blue-200">
       <button
         title="Move Up"
         className="w-7 h-7 p-2 text-blue-800 hover:text-blue-700 hover:bg-blue-100"
-        onClick={() => moveCell(id, "up")}
+        onClick={() => MoveCell(id, "up")}
       >
         <svg
           className="fill-current"
@@ -37,7 +37,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
       <button
         title="Move Down"
         className="w-7 h-7 p-2 text-blue-800 hover:text-blue-700 hover:bg-blue-100"
-        onClick={() => moveCell(id, "down")}
+        onClick={() => MoveCell(id, "down")}
       >
         <svg
           className="fill-current"
@@ -62,7 +62,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
       <button
         title="Remove"
         className="w-7 h-7 p-2 text-blue-800 hover:text-blue-700 hover:bg-blue-100"
-        onClick={() => deleteCell(id)}
+        onClick={() => DeleteCell(id)}
       >
         <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path

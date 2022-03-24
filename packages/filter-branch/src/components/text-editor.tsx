@@ -11,7 +11,7 @@ interface TextEditorProps {
 
 const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
   const [editing, setEditing] = useState(false);
-  const { updateCell } = useActions();
+  const { UpdateCell } = useActions();
   const editorRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
         <MDEditor
           className="text-editor unreset"
           value={cell.content}
-          onChange={(val) => updateCell(cell.id, val || "")}
+          onChange={(val) => UpdateCell(cell.id, val || "")}
         />
       </div>
     );

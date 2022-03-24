@@ -21,7 +21,7 @@ interface CodeCellProps {
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
-  const { updateCell } = useActions();
+  const { UpdateCell } = useActions();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -39,7 +39,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   };
 
   const handleEditorChange = (value: string) => {
-    updateCell(cell.id, value);
+    UpdateCell(cell.id, value);
   };
 
   return (
