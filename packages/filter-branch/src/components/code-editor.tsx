@@ -63,7 +63,6 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         onChange={onChange}
         defaultLanguage="javascript"
         height="100%"
-        theme="vs-dark"
         options={options}
         onMount={onMount}
       />

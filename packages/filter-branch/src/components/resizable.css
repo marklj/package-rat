@@ -1,5 +1,5 @@
 .react-resizable-handle {
-  @apply block bg-[#37414b] bg-no-repeat bg-center;
+  @apply block bg-blue-100 bg-no-repeat bg-center;
 }
 .react-resizable-handle-s {
   @apply h-3 w-full cursor-ns-resize;
