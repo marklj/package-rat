@@ -15,6 +15,23 @@ const App = () => {
 ReactDOM.render(<App />, document.querySelector('#root'));
 `;
 
+const preloadedCode = `
+  import _React from "react";
+  import _ReactDOM from "react-dom";
+  const show = (value) => {
+    const documentRoot = document.querySelector('#root');
+    if(typeof value === 'object') {
+      if(value.$$typeof && value.props) {
+        _ReactDOM.render(value, documentRoot);
+      } else {
+        documentRoot.innerHTML = JSON.stringify(value);
+      }
+    } else {
+      documentRoot.innerHTML = value;
+    }
+  };
+`;
+
 interface CodeCellProps {
   cell: Cell;
 }
@@ -22,23 +39,36 @@ interface CodeCellProps {
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const { UpdateCell, CreateBundle } = useActions();
   const bundle = useTypedSelector((state) => state.bundles.items[cell.id]);
+
+  // join all previous code to this cell's code
+  const cumulativeCode = useTypedSelector((state) => {
+    let currentCodeAdded = false;
+    return state.cells.order.reduce((previousCode, cellId) => {
+      if (!currentCodeAdded) {
+        currentCodeAdded = cellId === cell.id;
+        return `${previousCode}\n${state.cells.data[cellId].content}`;
+      }
+      return previousCode;
+    }, preloadedCode);
+  });
+
   const bundlerInitialized = useTypedSelector(
     ({ bundles: { isInit } }) => isInit
   );
 
   useEffect(() => {
     if (bundlerInitialized && !bundle) {
-      CreateBundle(cell.id, cell.content);
+      CreateBundle(cell.id, cumulativeCode);
       return;
     }
     const timer = setTimeout(() => {
-      CreateBundle(cell.id, cell.content);
+      CreateBundle(cell.id, cumulativeCode);
     }, 750);
     return () => {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cell.content, cell.id, CreateBundle, bundlerInitialized]);
+  }, [cumulativeCode, cell.id, CreateBundle, bundlerInitialized]);
 
   const handleEditorChange = (value: string) => {
     UpdateCell(cell.id, value);
