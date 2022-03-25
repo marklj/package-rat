@@ -16,6 +16,7 @@ const bundle = async (rawCode: string) => {
       },
       jsxFactory: "_React.createElement",
       jsxFragment: "_React.Fragment",
+      treeShaking: false,
     });
     return {
       code: result.outputFiles[0].text,
