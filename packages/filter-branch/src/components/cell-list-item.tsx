@@ -17,7 +17,7 @@ const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
   }
 
   return (
-    <div className="rounded overflow-hidden shadow-md">
+    <div className="rounded pb-3 overflow-hidden shadow-md">
       <div>
         <ActionBar id={cell.id} />
       </div>
