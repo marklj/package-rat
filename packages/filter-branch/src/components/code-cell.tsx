@@ -41,7 +41,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cumulativeCode, cell.id, CreateBundle, bundlerInitialized]);
+  }, [cumulativeCode, cell.id, cell.content, CreateBundle, bundlerInitialized]);
 
   const handleEditorChange = (value: string) => {
     UpdateCell(cell.id, value);
