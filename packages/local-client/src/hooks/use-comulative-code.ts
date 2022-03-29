@@ -23,15 +23,18 @@ export const useComulativeCode = (cellId: string) => {
   return useTypedSelector((state) => {
     let currentCodeAdded = false;
     return state.cells.order.reduce((previousCode, cId) => {
-      if (!currentCodeAdded) {
-        currentCodeAdded = cId === cellId;
-        return `
+      if (state.cells.data[cId].type === "code") {
+        if (!currentCodeAdded) {
+          currentCodeAdded = cId === cellId;
+          return `
           ${previousCode}\n
           ${currentCodeAdded ? showFunc : showFuncNoop}\n
           ${state.cells.data[cId].content}
         `;
+        }
+        return previousCode;
       }
-      return previousCode;
+      return "";
     }, "");
   });
 };
