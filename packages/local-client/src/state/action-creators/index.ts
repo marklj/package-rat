@@ -8,8 +8,9 @@ import {
   MoveCellAction,
   UpdateCellAction,
 } from "../actions";
-import { CellType, Direction } from "../cell";
+import { Cell, CellType, Direction } from "../cell";
 import * as esbuild from "esbuild-wasm";
+import axios from "axios";
 
 export const UpdateCell = (id: string, content: string): UpdateCellAction => {
   return {
@@ -83,3 +84,19 @@ export const CreateBundle = (cellId: string, input: string) => {
   };
 };
 export const CompleteBundle = () => {};
+
+export const fetchCells = () => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch({ type: ActionType.FETCH_CELLS });
+
+    try {
+      const { data }: { data: Cell[] } = await axios.get("/cells");
+      dispatch({ type: ActionType.FETCH_CELLS_COMPLETE, payload: data });
+    } catch (error) {
+      dispatch({
+        type: ActionType.FETCH_CELLS_ERROR,
+        payload: error.message,
+      });
+    }
+  };
+};
