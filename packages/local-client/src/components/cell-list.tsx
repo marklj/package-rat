@@ -5,7 +5,7 @@ import AddCell from "./add-cell";
 import CellListItem from "./cell-list-item";
 
 const CellList: React.FC = () => {
-  const { InitBundler } = useActions();
+  const { InitBundler, fetchCells } = useActions();
 
   const cells = useTypedSelector(({ cells: { order, data } }) =>
     order.map((id) => data[id])
@@ -13,8 +13,13 @@ const CellList: React.FC = () => {
 
   useEffect(() => {
     InitBundler();
+    fetchCells();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // useEffect(() => {
+  //   saveCells();
+  // }, []);
 
   const addCellStyle = `${
     cells.length ? "opacity-0" : ""
