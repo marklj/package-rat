@@ -12,7 +12,7 @@ interface CellState {
   };
 }
 
-const initalState: CellState = {
+const initialState: CellState = {
   loading: false,
   error: null,
   order: [],
@@ -20,8 +20,11 @@ const initalState: CellState = {
 };
 
 const reducer = produce(
-  (state: CellState = initalState, action: Action): CellState => {
+  (state: CellState = initialState, action: Action): CellState => {
     switch (action.type) {
+      case ActionType.SAVE_CELLS_ERROR:
+        state.error = action.payload;
+        return state;
       case ActionType.FETCH_CELLS:
         state.loading = true;
         state.error = null;
@@ -85,7 +88,7 @@ const reducer = produce(
         return state;
     }
   },
-  initalState
+  initialState
 );
 const randomId = () => {
   return Math.random().toString(36).substring(2, 5);

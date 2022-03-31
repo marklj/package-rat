@@ -33,6 +33,7 @@ export interface UpdateCellAction {
 export interface BundlerInitAction {
   type: ActionType.BUNDLER_INIT;
 }
+
 export interface BundlerInitCompleteAction {
   type: ActionType.BUNDLER_INIT_COMPLETE;
 }
@@ -56,12 +57,19 @@ export interface BundleCompleteAction {
 export interface FetchCellsAction {
   type: ActionType.FETCH_CELLS;
 }
+
 export interface FetchCellsCompleteAction {
   type: ActionType.FETCH_CELLS_COMPLETE;
   payload: Cell[];
 }
+
 export interface FetchCellsErrorAction {
   type: ActionType.FETCH_CELLS_ERROR;
+  payload: string;
+}
+
+export interface SaveCellsErrorAction {
+  type: ActionType.SAVE_CELLS_ERROR;
   payload: string;
 }
 
@@ -76,4 +84,5 @@ export type Action =
   | BundleCompleteAction
   | FetchCellsAction
   | FetchCellsCompleteAction
-  | FetchCellsErrorAction;
+  | FetchCellsErrorAction
+  | SaveCellsErrorAction;

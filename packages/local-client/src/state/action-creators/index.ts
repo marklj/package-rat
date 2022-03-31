@@ -11,6 +11,7 @@ import {
 import { Cell, CellType, Direction } from "../cell";
 import * as esbuild from "esbuild-wasm";
 import axios from "axios";
+import { RootState } from "../reducers";
 
 export const UpdateCell = (id: string, content: string): UpdateCellAction => {
   return {
@@ -95,6 +96,23 @@ export const fetchCells = () => {
     } catch (error) {
       dispatch({
         type: ActionType.FETCH_CELLS_ERROR,
+        payload: error.message,
+      });
+    }
+  };
+};
+
+export const saveCells = () => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const {
+      cells: { data, order },
+    } = getState();
+    const cells = order.map((id) => data[id]);
+    try {
+      await axios.post("/cells", { cells });
+    } catch (error) {
+      dispatch({
+        type: ActionType.SAVE_CELLS_ERROR,
         payload: error.message,
       });
     }
