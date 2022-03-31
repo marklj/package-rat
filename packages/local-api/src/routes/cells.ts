@@ -25,7 +25,7 @@ export const createCellsRouter = (filename: string, directory: string) => {
       }
     }
   });
-  router.get("/cells", async (request, response) => {
+  router.post("/cells", async (request, response) => {
     const { cells }: { cells: Cell[] } = request.body;
     await fs.writeFile(fullPath, JSON.stringify(cells), "utf-8");
     response.send({ status: "ok" });
