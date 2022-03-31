@@ -17,10 +17,6 @@ const CellList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   saveCells();
-  // }, []);
-
   const addCellStyle = `${
     cells.length ? "opacity-0" : ""
   } hover:opacity-100 transition-opacity duration-300 ease-in-out`;
